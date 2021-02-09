@@ -61,8 +61,7 @@ class CaloriesCalculator(Calculator):
 
 
 class Record:
-    def __init__(self, amount, comment,
-                 date=None):
+    def __init__(self, amount, comment, date=None):
         self.amount = amount
         self.comment = comment
         self.date = (dt.date.today() if date is None
