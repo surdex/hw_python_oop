@@ -37,8 +37,8 @@ class CashCalculator(Calculator):
         }
         if not(currency in currency_key.keys()):
             raise ValueError(
-                    'Валюта недоступна, выберите другую: '
-                    f'{", ".join(currency_key.keys())}')
+                'Валюта недоступна, выберите другую: '
+                f'{", ".join(currency_key.keys())}')
         cash_remained = round(self.get_today_remainder()
                               / currency_key[currency][1], 2)
         if cash_remained > 0:
