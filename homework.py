@@ -33,10 +33,10 @@ class CashCalculator(Calculator):
 
     def get_today_cash_remained(self, currency: str) -> str:
         currency_key = {
-                       'usd': ('USD', CashCalculator.USD_RATE),
-                       'eur': ('Euro', CashCalculator.EURO_RATE),
-                       'rub': ('руб', CashCalculator.RUB_RATE),
-                       }
+            'usd': ('USD', CashCalculator.USD_RATE),
+            'eur': ('Euro', CashCalculator.EURO_RATE),
+            'rub': ('руб', CashCalculator.RUB_RATE),
+        }
         if not(currency in currency_key.keys()):
             raise ValueError('Валюта недоступна, выберите другую: '
                              f'{", ".join(currency_key.keys())}')
