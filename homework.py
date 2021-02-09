@@ -14,7 +14,7 @@ class Calculator:
     def get_today_stats(self) -> float:
         date_today = dt.date.today()
         return round(sum(i.amount for i in self.records
-                         if i.date == date_today), 2)
+                     if i.date == date_today), 2)
 
     def get_today_remainder(self) -> float:
         return round((self.limit - self.get_today_stats()), 2)
@@ -23,7 +23,7 @@ class Calculator:
         date_today = dt.date.today()
         last_week = date_today - dt.timedelta(days=6)
         return round(sum(i.amount for i in self.records
-                         if last_week <= i.date <= date_today), 2)
+                     if last_week <= i.date <= date_today), 2)
 
 
 class CashCalculator(Calculator):
