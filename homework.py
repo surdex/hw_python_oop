@@ -11,17 +11,17 @@ class Calculator:
 
     def get_today_stats(self):
         date_today = dt.date.today()
-        return round(sum(i.amount for i in self.records
-                     if i.date == date_today), 2)
+        return sum(rec_code.amount for rec_code in self.records
+                   if rec_code.date == date_today)
 
     def get_today_remainder(self):
-        return round((self.limit - self.get_today_stats()), 2)
+        return (self.limit - self.get_today_stats())
 
     def get_week_stats(self):
         date_today = dt.date.today()
         last_week = date_today - dt.timedelta(days=6)
-        return round(sum(i.amount for i in self.records
-                     if last_week <= i.date <= date_today), 2)
+        return sum(rec_code.amount for rec_code in self.records
+                   if last_week <= rec_code.date <= date_today)
 
 
 class CashCalculator(Calculator):
@@ -30,30 +30,30 @@ class CashCalculator(Calculator):
     RUB_RATE = 1.00
 
     def get_today_cash_remained(self, currency):
-        currency_key = {
-            'usd': ('USD', CashCalculator.USD_RATE),
-            'eur': ('Euro', CashCalculator.EURO_RATE),
-            'rub': ('руб', CashCalculator.RUB_RATE),
-        }
-        if not(currency in currency_key.keys()):
-            raise ValueError(
-                'Валюта недоступна, выберите другую: '
-                f'{", ".join(currency_key.keys())}')
-        cash_remained = round(self.get_today_remainder()
-                              / currency_key[currency][1], 2)
-        if cash_remained > 0:
-            return ('На сегодня осталось '
-                    f'{cash_remained} {currency_key[currency][0]}')
-        if not cash_remained:
+        cash_remained = self.get_today_remainder()
+        if cash_remained == 0:
             return 'Денег нет, держись'
+        currency_key = {
+            'usd': ('USD', self.USD_RATE),
+            'eur': ('Euro', self.EURO_RATE),
+            'rub': ('руб', self.RUB_RATE)
+        }
+        if currency not in currency_key:
+            available_curr = ", ".join(currency_key.keys())
+            raise ValueError(
+                f'Валюта недоступна, выберите другую: {available_curr}')
+        currency_name, currency_rate = currency_key[currency]
+        cash_remained = round(cash_remained / currency_rate, 2)
+        if cash_remained > 0:
+            return (f'На сегодня осталось {cash_remained} {currency_name}')
         cash_remained = abs(cash_remained)
         return ('Денег нет, держись: твой долг - '
-                f'{cash_remained} {currency_key[currency][0]}')
+                f'{cash_remained} {currency_name}')
 
 
 class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
-        calories_remained = self.get_today_remainder()
+        calories_remained = round(self.get_today_remainder(), 2)
         if calories_remained > 0:
             return ('Сегодня можно съесть что-нибудь ещё, но с общей'
                     f' калорийностью не более {calories_remained} кКал')
