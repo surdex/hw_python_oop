@@ -1,25 +1,23 @@
-from __future__ import annotations
-
 import datetime as dt
 
 
 class Calculator:
-    def __init__(self, limit: float) -> None:
+    def __init__(self, limit):
         self.limit = limit
         self.records = []
 
-    def add_record(self, record: Record) -> None:
+    def add_record(self, record):
         self.records.append(record)
 
-    def get_today_stats(self) -> float:
+    def get_today_stats(self):
         date_today = dt.date.today()
         return round(sum(i.amount for i in self.records
                      if i.date == date_today), 2)
 
-    def get_today_remainder(self) -> float:
+    def get_today_remainder(self):
         return round((self.limit - self.get_today_stats()), 2)
 
-    def get_week_stats(self) -> float:
+    def get_week_stats(self):
         date_today = dt.date.today()
         last_week = date_today - dt.timedelta(days=6)
         return round(sum(i.amount for i in self.records
@@ -31,15 +29,16 @@ class CashCalculator(Calculator):
     EURO_RATE = 89.51
     RUB_RATE = 1.00
 
-    def get_today_cash_remained(self, currency: str) -> str:
+    def get_today_cash_remained(self, currency):
         currency_key = {
             'usd': ('USD', CashCalculator.USD_RATE),
             'eur': ('Euro', CashCalculator.EURO_RATE),
             'rub': ('руб', CashCalculator.RUB_RATE),
         }
         if not(currency in currency_key.keys()):
-            raise ValueError('Валюта недоступна, выберите другую: '
-                             f'{", ".join(currency_key.keys())}')
+            raise ValueError(
+                    'Валюта недоступна, выберите другую: '
+                    f'{", ".join(currency_key.keys())}')
         cash_remained = round(self.get_today_remainder()
                               / currency_key[currency][1], 2)
         if cash_remained > 0:
@@ -53,7 +52,7 @@ class CashCalculator(Calculator):
 
 
 class CaloriesCalculator(Calculator):
-    def get_calories_remained(self) -> str:
+    def get_calories_remained(self):
         calories_remained = self.get_today_remainder()
         if calories_remained > 0:
             return ('Сегодня можно съесть что-нибудь ещё, но с общей'
@@ -62,8 +61,8 @@ class CaloriesCalculator(Calculator):
 
 
 class Record:
-    def __init__(self, amount: float, comment: str,
-                 date=None) -> None:
+    def __init__(self, amount, comment,
+                 date=None):
         self.amount = amount
         self.comment = comment
         self.date = (dt.date.today() if date is None
