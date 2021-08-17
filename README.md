@@ -10,5 +10,5 @@ cash_calculator = CashCalculator(limit=1000)
 cash_calculator.add_record(Record(amount=145, comment='кофе'))
 ```
 
-Калькулятор выдаёт данные остатка на сегодня денег/калорий (**object.get_today_cash_remained('rub')**/**object.get_today_cash_remained()**)
-и суммарных трат за последнюю неделю (**object.get_week_stats()**)
+Калькулятор выдаёт данные остатка на сегодня денег/калорий (```object.get_today_cash_remained('rub')```/```object.get_today_cash_remained()```)
+и суммарных трат за последнюю неделю (```object.get_week_stats()```)
